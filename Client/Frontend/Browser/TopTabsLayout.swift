@@ -45,6 +45,7 @@ class TopTabsViewLayout: UICollectionViewFlowLayout {
     }
     
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        decorationAttributeArr = [:]
         return true
     }
 
@@ -73,18 +74,16 @@ class TopTabsViewLayout: UICollectionViewFlowLayout {
         decorationAttributes.themeColor = self.themeColor
 
         // Create attributes for the Tab Separator.
-        var separatorArr: [Int: UICollectionViewLayoutAttributes] = [:]
         for i in attributes {
             if i.indexPath.item > 0 {
                 let sep = UICollectionViewLayoutAttributes(forDecorationViewOfKind: TopTabsSeparatorUX.Identifier, with: i.indexPath)
                 sep.frame = CGRect(x: i.frame.origin.x - 2, y: i.frame.size.height / 4, width: TopTabsSeparatorUX.Width, height: i.frame.size.height / 2)
                 sep.zIndex = -1
-                separatorArr[i.indexPath.row] = sep
                 attributes.append(sep)
+                decorationAttributeArr[i.indexPath.item] = sep
             }
         }
 
-        self.decorationAttributeArr = separatorArr
         attributes.append(decorationAttributes)
         return attributes
     }
