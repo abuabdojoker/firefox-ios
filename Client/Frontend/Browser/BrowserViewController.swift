@@ -2179,7 +2179,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     func show(buttonToast: ButtonToast, afterWaiting delay: Double = 0, duration: Double = SimpleToastUX.ToastDismissAfter) {
-        let time = DispatchTime.now() + Double(delay * Double(NSEC_PER_MSEC)) / Double(NSEC_PER_SEC)
+        let time = DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds) + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
         DispatchQueue.main.asyncAfter(deadline: time) {
             self.view.addSubview(buttonToast)
             buttonToast.snp.makeConstraints { make in
@@ -2196,15 +2196,6 @@ extension BrowserViewController: TabManagerDelegate {
         }
         
         if let undoToast = toast {
-            let time = DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds) + Double(Int64(ButtonToastUX.ToastDelay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-            DispatchQueue.main.asyncAfter(deadline: time) {
-                self.view.addSubview(undoToast)
-                undoToast.snp.makeConstraints { make in
-                    make.left.right.equalTo(self.view)
-                    make.bottom.equalTo(self.webViewContainer)
-                }
-                undoToast.showToast()
-            }
             show(buttonToast: undoToast, afterWaiting: ButtonToastUX.ToastDelay)
         }
     }
