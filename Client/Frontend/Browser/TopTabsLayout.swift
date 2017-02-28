@@ -51,7 +51,7 @@ class TopTabsViewLayout: UICollectionViewFlowLayout {
 
     // MARK: layoutAttributesForElementsInRect
     override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        if let attr = self.decorationAttributeArr[indexPath.row] {
+        if let attr = self.decorationAttributeArr[indexPath.row], indexPath.row < self.collectionView!.numberOfItems(inSection: 0) - 1 {
             return attr
         } else {
             // Sometimes decoration views will be requested for rows that might not exist. Just show an empty separator.
